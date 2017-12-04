@@ -1,6 +1,8 @@
 import React from 'react'
-// import * as BooksAPI from './BooksAPI'
+import * as BooksAPI from './BooksAPI'
 import './App.css'
+
+//TODO: install react-router-nod
 
 class BooksApp extends React.Component {
   state = {
