@@ -6,7 +6,6 @@ import './App.css'
 class Book extends Component {
 
   render() {
-    // console.log("Book.render = ", this.props.bookInstance)
 
     const {bookInstance} = this.props
 
@@ -63,12 +62,13 @@ class BookShelf extends Component {
         <h2 className="bookshelf-title">{bookShelfTitle}</h2>
         <div className="bookshelf-books">
           <ol className="books-grid">
-            <li>
-              <Book bookInstance={this.props.books[0]}/>
-            </li>
-            <li>
-              <Book bookInstance={this.props.books[1]}/>
-            </li>
+          {
+            this.props.books.map((book) => (
+              <li key={book.id}>
+              <Book bookInstance={book}/>
+              </li>
+            ))
+          }
           </ol>
         </div>
       </div>
@@ -105,6 +105,8 @@ class SearchPage extends Component {
 
 class HomePage extends Component  {
 
+  //filter books based on shelf name
+  //currentlyReading, wantToRead, read
   filterBooks(filterString) {
     if(this.props){
       return this.props.books.filter((book) => {
@@ -113,25 +115,22 @@ class HomePage extends Component  {
     }
   }
 
-  //currentlyReading
+  //returns array of currentlyReading books
   getCurrentlyReading() {
     return this.filterBooks("currentlyReading")
   }
 
+  //returns array of wantToRead books
   getWantToRead() {
     return this.filterBooks("wantToRead")
   }
 
+  //returns array of read books
   getRead() {
     return this.filterBooks("read")
   }
 
   render() {
-
-    // console.log('currentlyReading', this.getCurrentlyReading())
-    // console.log('currentlyReading', this.getWantToRead())
-    // console.log('currentlyReading', this.getRead())
-
     return(
       <div className="list-books">
         <div className="list-books-title">
@@ -139,31 +138,21 @@ class HomePage extends Component  {
         </div>
         <div className="list-books-content">
           <div>
-
             < BookShelf bookShelfTitle="Currently Reading" books={this.getCurrentlyReading()}/>
-
             < BookShelf bookShelfTitle="Want To Read" books={this.getWantToRead()}/>
-
-            < BookShelf bookShelfTitle="Want To Read" books={this.getRead()}/>
+            < BookShelf bookShelfTitle="Read" books={this.getRead()}/>
           </div>
         </div>
         <div className="open-search">
           <Link to="/search-books">Add a book</Link>
         </div>
       </div>
-
     )//return()
   }//render()
 }//class HomePage
 
 class BooksApp extends React.Component {
   state = {
-    /**
-     * TODO: Instead of using this state variable to keep track of which page
-     * we're on, use the URL in the browser's address bar. This will ensure that
-     * users can use the browser's back and forward buttons to navigate between
-     * pages, as well as provide a good URL they can bookmark and share.
-     */
     books: []
   }
 
