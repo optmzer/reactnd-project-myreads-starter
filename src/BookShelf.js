@@ -18,7 +18,9 @@ class BookShelf extends Component {
             this.props.books.map((book) => (
               <li key={book.id}>
               <Book bookInstance={book}
-                    onShelfChange={this.props.onShelfChange}/>
+                    onShelfChange={(book_id, shelfName) => {
+                      this.props.onShelfChange(book_id, shelfName)
+                    }}/>
               </li>
             ))
           }

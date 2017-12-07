@@ -7,30 +7,16 @@ import SearchPage from './SearchPage'
 
 class BooksApp extends React.Component {
 
-constructor(props) {
-  super(props)
-
-  this.handleShelfChange = this.handleShelfChange.bind(this)
-}
   state = {
     books: []
   }
 
-  handleShelfChange(event) {
-    //function is called from <Book /> that does not have a state.
-    var book_id = event.target.id
-    var shelf_selected = event.target.value
-
-    event.preventDefault()
-
-    //update server
-    BooksAPI.update({id: book_id}, shelf_selected).then(function(responce) {
-      BooksAPI.getAll().then( (b) => {
-        this.setState({books: b})
-      })
-    }
-  )
-}//handleShelfChange()
+  handleShelfChange(book_id, shelfName) {
+    console.log("book_id = " + book_id + "; shelfName = " + shelfName)
+    BooksAPI.update({id: book_id}, shelfName).then(responce => {
+      console.log("Server responce = ", responce)
+    })
+  }//handleShelfChange()
 
   componentDidMount() {
     this.getAllBooks()
@@ -39,6 +25,7 @@ constructor(props) {
   getAllBooks() {
     BooksAPI.getAll().then( (b) => {
       this.setState({books: b})
+      console.log("getAllBooks() state changed")
     })
   }
 
@@ -57,7 +44,9 @@ constructor(props) {
           exact path="/"
           render={() => (
             <HomePage books={this.state.books}
-                      onShelfChange={this.handleShelfChange}/>
+                      onShelfChange={(book_id, shelfName) => {
+                        this.handleShelfChange(book_id, shelfName)
+                      }}/>
           )}
           />
       </div>
