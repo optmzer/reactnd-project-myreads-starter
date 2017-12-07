@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import {Route, Link} from 'react-router-dom'
 import * as BooksAPI from './BooksAPI'
 import './App.css'
-import BookShelf from './BookShelf'
+import HomePage from './HomePage'
 
 class SearchPage extends Component {
 
@@ -54,60 +54,6 @@ class SearchPage extends Component {
   }//render()
 }//class SearchPage
 
-class HomePage extends Component  {
-
-  //filter books based on shelf name
-  //currentlyReading, wantToRead, read
-  filterBooks(filterString) {
-    if(this.props){
-      return this.props.books.filter((book) => {
-        return book.shelf === filterString
-      })
-    }
-  }
-
-  //returns array of currentlyReading books
-  getCurrentlyReading() {
-    return this.filterBooks("currentlyReading")
-  }
-
-  //returns array of wantToRead books
-  getWantToRead() {
-    return this.filterBooks("wantToRead")
-  }
-
-  //returns array of read books
-  getRead() {
-    return this.filterBooks("read")
-  }
-
-  render() {
-
-    return(
-      <div className="list-books">
-        <div className="list-books-title">
-          <h1>MyReads</h1>
-        </div>
-        <div className="list-books-content">
-          <div>
-            < BookShelf bookShelfTitle="Currently Reading"
-                        books={this.getCurrentlyReading()}
-                        onShelfChange={this.props.onShelfChange}/>
-            < BookShelf bookShelfTitle="Want To Read"
-                        books={this.getWantToRead()}
-                        onShelfChange={this.props.onShelfChange}/>
-            < BookShelf bookShelfTitle="Read"
-                        books={this.getRead()}
-                        onShelfChange={this.props.onShelfChange}/>
-          </div>
-        </div>
-        <div className="open-search">
-          <Link to="/search-books">Add a book</Link>
-        </div>
-      </div>
-    )//return()
-  }//render()
-}//class HomePage
 
 class BooksApp extends React.Component {
 
