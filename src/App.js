@@ -2,52 +2,9 @@ import React, {Component} from 'react'
 import {Route, Link} from 'react-router-dom'
 import * as BooksAPI from './BooksAPI'
 import './App.css'
+import Book from './Book'
 
-class Book extends Component {
 
-  render() {
-
-    const {bookInstance} = this.props
-
-    var title,
-        thumbnail,
-        authors = ""
-
-    if(bookInstance){
-      title = bookInstance.title
-      thumbnail = bookInstance.imageLinks.smallThumbnail
-      bookInstance.authors.forEach((value, index) => {
-        if(index > 0){
-          authors += (", " + value)
-        } else {
-          authors += value
-        }
-      })
-    }
-
-    return(
-      <div className="book">
-        <div className="book-top">
-          <div className="book-cover" style={{
-                                            width: 128,
-                                            height: 188,
-                                            backgroundImage: `url(${thumbnail})` }}></div>
-          <div className="book-shelf-changer">
-            <select>
-              <option value="none" disabled>Move to...</option>
-              <option value="currentlyReading">Currently Reading</option>
-              <option value="wantToRead">Want to Read</option>
-              <option value="read">Read</option>
-              <option value="none">None</option>
-            </select>
-          </div>
-        </div>
-        <div className="book-title">{title}</div>
-        <div className="book-authors">{authors}</div>
-      </div>
-    )//return()
-  }//render()
-}//class Book
 
 class BookShelf extends Component {
   render() {
@@ -65,7 +22,8 @@ class BookShelf extends Component {
           {
             this.props.books.map((book) => (
               <li key={book.id}>
-              <Book bookInstance={book}/>
+              <Book bookInstance={book}
+                    onShelfChange={this.props.onShelfChange}/>
               </li>
             ))
           }
@@ -77,7 +35,27 @@ class BookShelf extends Component {
 }//class BookShelf
 
 class SearchPage extends Component {
+
+  state = {
+    search_query: ""
+  }
+
+  getSearchResults(search_query) {
+    BooksAPI.search(search_query, 20).then(search_result => {
+      console.log(search_result)
+    })
+  }
+
+  updateSearchQuery(event) {
+    this.setState({
+      search_query: event.target.value.trim()
+    })
+  }
+
   render() {
+
+    const {search_query} = this.state
+
     return(
       <div className="search-books">
         <div className="search-books-bar">
@@ -91,7 +69,10 @@ class SearchPage extends Component {
               However, remember that the BooksAPI.search method DOES search by title or author. So, don't worry if
               you don't find a specific author or title. Every search is limited by search terms.
             */}
-            <input type="text" placeholder="Search by title or author"/>
+            <input type="text"
+                  placeholder="Search by title or author"
+                  value={search_query}
+                  onChange={this.updateSearchQuery}/>
 
           </div>
         </div>
@@ -131,6 +112,7 @@ class HomePage extends Component  {
   }
 
   render() {
+
     return(
       <div className="list-books">
         <div className="list-books-title">
@@ -138,9 +120,15 @@ class HomePage extends Component  {
         </div>
         <div className="list-books-content">
           <div>
-            < BookShelf bookShelfTitle="Currently Reading" books={this.getCurrentlyReading()}/>
-            < BookShelf bookShelfTitle="Want To Read" books={this.getWantToRead()}/>
-            < BookShelf bookShelfTitle="Read" books={this.getRead()}/>
+            < BookShelf bookShelfTitle="Currently Reading"
+                        books={this.getCurrentlyReading()}
+                        onShelfChange={this.props.onShelfChange}/>
+            < BookShelf bookShelfTitle="Want To Read"
+                        books={this.getWantToRead()}
+                        onShelfChange={this.props.onShelfChange}/>
+            < BookShelf bookShelfTitle="Read"
+                        books={this.getRead()}
+                        onShelfChange={this.props.onShelfChange}/>
           </div>
         </div>
         <div className="open-search">
@@ -152,17 +140,44 @@ class HomePage extends Component  {
 }//class HomePage
 
 class BooksApp extends React.Component {
+
+constructor(props) {
+  super(props)
+
+  this.handleShelfChange = this.handleShelfChange.bind(this)
+}
   state = {
     books: []
   }
 
+  handleShelfChange(event) {
+    //function is called from <Book /> that does not have a state.
+    var book_id = event.target.id
+    var shelf_selected = event.target.value
+
+    event.preventDefault()
+
+    //update server
+    BooksAPI.update({id: book_id}, shelf_selected).then(function(responce) {
+      BooksAPI.getAll().then( (b) => {
+        this.setState({books: b})
+      })
+    }
+  )
+}//handleShelfChange()
+
   componentDidMount() {
+    this.getAllBooks()
+  }//componentDidMount()
+
+  getAllBooks() {
     BooksAPI.getAll().then( (b) => {
       this.setState({books: b})
     })
-  }//componentDidMount()
+  }
 
   render() {
+
     return (
       <div className="app">
           <Route
@@ -175,7 +190,8 @@ class BooksApp extends React.Component {
           <Route
           exact path="/"
           render={() => (
-            <HomePage books={this.state.books}/>
+            <HomePage books={this.state.books}
+                      onShelfChange={this.handleShelfChange}/>
           )}
           />
       </div>
