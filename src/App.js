@@ -11,21 +11,37 @@ class BooksApp extends React.Component {
     books: []
   }
 
-  handleShelfChange(book_id, shelfName) {
-    console.log("book_id = " + book_id + "; shelfName = " + shelfName)
-    BooksAPI.update({id: book_id}, shelfName).then(responce => {
-      console.log("Server responce = ", responce)
-    })
-  }//handleShelfChange()
-
   componentDidMount() {
     this.getAllBooks()
   }//componentDidMount()
 
+  //there is such a thing as this.forceUpdate()
+  handleShelfChange(book_id, shelfName) {
+
+    BooksAPI.update({id: book_id}, shelfName).then(responce => {
+
+      // //this works but have to get all book over the net
+      // this.getAllBooks()
+
+      //this causes TypeError book is not defined in HopePage line 13
+      this.setState(prev_state => ({
+        books: prev_state.books.map((book) => {
+          //list through books and change shelf if id match
+          if(book_id === book.id){
+            book.shelf = shelfName
+          }
+          //if you don't have return statement
+          //this caused a bug in HomePage L12
+          return book
+        })
+      }))
+    })//.then()
+  }//handleShelfChange()
+
+
   getAllBooks() {
     BooksAPI.getAll().then( (b) => {
       this.setState({books: b})
-      console.log("getAllBooks() state changed")
     })
   }
 

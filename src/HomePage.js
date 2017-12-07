@@ -8,7 +8,7 @@ class HomePage extends Component  {
   //filter books based on shelf name
   //currentlyReading, wantToRead, read
   filterBooks(filterString) {
-    if(this.props){
+    if(this.props.books){
       return this.props.books.filter((book) => {
         return book.shelf === filterString
       })
