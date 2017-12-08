@@ -10,7 +10,6 @@ but does not add it into the state of the app.
 
 1 - move books_found into the App.js
 2 - remove added book from the search page.
-5 - check if a book is already on one of the shelves L39
 */
 
 class SearchPage extends Component {
@@ -30,18 +29,28 @@ class SearchPage extends Component {
     this.setState({search_query: ""})
   }
 
+  //compares this.props.books with a book
+  //returns true if book is in the this.props.books
+  isInCollection(book) {
+    var result = false
+    this.props.books.forEach(function (element){
+        if(element.id === book.id || element.title === book.title)
+          result = true
+      }
+    )
+    return result
+  }
+
   getSearchResults() {
     //books returned form search does not have shelf attribute.
     //if search_query is not empty
     if(this.state.search_query){
       BooksAPI.search(this.state.search_query, 20).then((found) => {
         //filter books that already in the state
-        this.setState({ books_found: found.filter((book) =>
+        this.setState({ books_found: found.filter((book) => {
           //if does not include remove it from search result
-          !this.props.books.includes(book)
-
-
-          )//.filter
+            return !this.isInCollection(book)
+          })//.filter
        })//.setState
       })//.then
     }//if
