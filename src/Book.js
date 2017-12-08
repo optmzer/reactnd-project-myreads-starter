@@ -2,6 +2,11 @@ import React, {Component} from 'react'
 
 class Book extends Component {
 
+  outputEvent(event) {
+    console.log(event)
+    console.log(event.target)
+  }
+
   render() {
 
     const {bookInstance} = this.props
@@ -13,13 +18,18 @@ class Book extends Component {
     if(bookInstance){
       title = bookInstance.title
       thumbnail = bookInstance.imageLinks.smallThumbnail
-      bookInstance.authors.forEach((value, index) => {
-        if(index > 0){
-          authors += (", " + value)
-        } else {
-          authors += value
-        }
-      })
+      if(bookInstance.authors){
+        bookInstance.authors.forEach((value, index) => {
+          if(index > 0){
+            authors += (", " + value)
+          } else {
+            authors += value
+          }
+        })
+      } else {
+        //some fields are left empty
+        authors += "Authors not stated"
+      }//if else
     }
 
     return(
@@ -31,8 +41,9 @@ class Book extends Component {
                                             backgroundImage: `url(${thumbnail})` }}></div>
           <div className="book-shelf-changer">
             <select id={bookInstance.id}
-                    onChange={(event) => this.props.onShelfChange(bookInstance.id, event.target.value)}>
-              <option value="none" disabled>Move to...</option>
+                    onChange={(event) => this.props.onShelfChange(bookInstance.id, event.target.value)}
+                    >
+              <option value="none">Move to...</option>
               <option value="none">None</option>
               <option value="currentlyReading">Currently Reading</option>
               <option value="wantToRead">Want to Read</option>

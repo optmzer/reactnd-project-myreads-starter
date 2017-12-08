@@ -1,24 +1,51 @@
 import React, {Component} from 'react'
 import {Link} from 'react-router-dom'
 import * as BooksAPI from './BooksAPI'
-// import BookShelf from './BookShelf'
+import BookShelf from './BookShelf'
+
+
+/**
+TODO: It changes shelf in the state of the SearchPage
+but does not add it into the state of the app.
+
+1 - move books_found into the App.js
+2 - add new books into the App.state.
+3 - create a button reset search
+4 - None is not working in HomePage. it sets the value but does not remove it
+from the state.
+*/
 
 class SearchPage extends Component {
 
   state = {
-    search_query: ""
-  }
-
-  getSearchResults(search_query) {
-    BooksAPI.search(search_query, 20).then(search_result => {
-      console.log(search_result)
-    })
+    search_query: "",
+    books_found: []
   }
 
   updateSearchQuery(event) {
     this.setState({
       search_query: event.target.value.trim()
     })
+  }
+
+  getSearchResults() {
+    // BooksAPI.getAll().then( (b) => {
+    //   this.setState({books: b})
+    // })
+
+    //if search_query is not empty
+    if(this.state.search_query){
+      BooksAPI.search(this.state.search_query, 20).then((found) => {
+        this.setState({ books_found: found })
+      })//.then
+    }//if
+  }//getSearchResults()
+
+  hndleButtonPress(event) {
+    //on press Enterget results form the server
+    if(event.key === "Enter"){
+      this.getSearchResults()
+    }
   }
 
   render() {
@@ -41,12 +68,22 @@ class SearchPage extends Component {
             <input type="text"
                   placeholder="Search by title or author"
                   value={search_query}
-                  onChange={this.updateSearchQuery}/>
+                  onChange={event => this.updateSearchQuery(event)}
+                  onKeyPress={(event) => this.hndleButtonPress(event)}
+                  />
 
           </div>
         </div>
         <div className="search-books-results">
-          <ol className="books-grid"></ol>
+        {this.state.books_found.length !== 0 &&
+
+          < BookShelf bookShelfTitle="Search Results"
+                      books={this.state.books_found}
+                      onShelfChange={(book_id, shelfName) => {
+                        this.props.onShelfChange(book_id, shelfName)
+                      }} />
+        }
+
         </div>
       </div>
     )//return()
