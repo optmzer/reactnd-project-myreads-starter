@@ -31,12 +31,18 @@ class SearchPage extends Component {
   }
 
   getSearchResults() {
-
+    //books returned form search does not have shelf attribute.
     //if search_query is not empty
     if(this.state.search_query){
       BooksAPI.search(this.state.search_query, 20).then((found) => {
         //filter books that already in the state
-        this.setState({ books_found: found })
+        this.setState({ books_found: found.filter((book) =>
+          //if does not include remove it from search result
+          !this.props.books.includes(book)
+
+
+          )//.filter
+       })//.setState
       })//.then
     }//if
   }//getSearchResults()

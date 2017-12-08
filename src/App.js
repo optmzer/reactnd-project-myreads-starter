@@ -8,7 +8,7 @@ import SearchPage from './SearchPage'
 class BooksApp extends React.Component {
 
   state = {
-    books: []
+    books: [],
   }
 
   componentDidMount() {
@@ -24,11 +24,25 @@ class BooksApp extends React.Component {
     )
   }
 
+  //remove book from the list
+  removeBookFromState(book) {
+    this.setState(state => ({
+      books: state.books.filter(element => {
+        return element.id !== book.id
+      })
+    }))
+  }//removeBookFromState()
+
   //there is such a thing as this.forceUpdate()
   handleShelfChange(book, shelfName) {
     //if book is not in the current state add it
-    if(this.state.books.indexOf(book) === -1) {
+    if(!this.state.books.includes(book)) {
       this.updateBooks(book)
+    }
+
+    //TODO: causes a bug. override state with deleted book.
+    if("none" === shelfName) {
+      this.removeBookFromState(book)
     }
 
     //update server on book shelf changes
@@ -51,12 +65,15 @@ class BooksApp extends React.Component {
 
   render() {
 
+console.log("App render L72 - ", this.state.books)
+
     return (
       <div className="app">
           <Route
           path="/search-books"
           render={() => (
-            <SearchPage onShelfChange={(book, shelfName) => {
+            <SearchPage books={this.state.books}
+                        onShelfChange={(book, shelfName) => {
                           this.handleShelfChange(book, shelfName)
                         }} />
                   )}
