@@ -41,18 +41,18 @@ class HomePage extends Component  {
           <div>
             < BookShelf bookShelfTitle="Currently Reading"
                         books={this.getCurrentlyReading()}
-                        onShelfChange={(book_id, shelfName) => {
-                          this.props.onShelfChange(book_id, shelfName)
+                        onShelfChange={(book, shelfName) => {
+                          this.props.onShelfChange(book, shelfName)
                         }} />
             < BookShelf bookShelfTitle="Want To Read"
                         books={this.getWantToRead()}
-                        onShelfChange={(book_id, shelfName) => {
-                          this.props.onShelfChange(book_id, shelfName)
+                        onShelfChange={(book, shelfName) => {
+                          this.props.onShelfChange(book, shelfName)
                         }}/>
             < BookShelf bookShelfTitle="Read"
                         books={this.getRead()}
-                        onShelfChange={(book_id, shelfName) => {
-                          this.props.onShelfChange(book_id, shelfName)
+                        onShelfChange={(book, shelfName) => {
+                          this.props.onShelfChange(book, shelfName)
                         }}/>
           </div>
         </div>

@@ -9,20 +9,26 @@ class BookShelf extends Component {
       bookShelfTitle = this.props.bookShelfTitle
     }
 
+    // console.log("BookShelf L12, ", this.props)
+
     return(
       <div className="bookshelf">
         <h2 className="bookshelf-title">{bookShelfTitle}</h2>
         <div className="bookshelf-books">
           <ol className="books-grid">
           {
-            this.props.books.map((book) => (
-              <li key={book.id}>
-              <Book bookInstance={book}
-                    onShelfChange={(book_id, shelfName) => {
-                      this.props.onShelfChange(book_id, shelfName)
-                    }}/>
-              </li>
-            ))
+            !this.props.books.items ? (
+              this.props.books.map((book) => (
+                <li key={book.id + book.shelf + book.title}>
+                <Book bookInstance={book}
+                onShelfChange={(book, shelfName) => {
+                  this.props.onShelfChange(book, shelfName)
+                }}/>
+                </li>
+              ))
+            ) : (
+              <p>No books to dispaly</p>
+            )
           }
           </ol>
         </div>

@@ -12,38 +12,42 @@ class BooksApp extends React.Component {
   }
 
   componentDidMount() {
-    this.getAllBooks()
+    BooksAPI.getAll().then( (b) => {
+      this.setState({books: b})
+    })
   }//componentDidMount()
 
+  updateBooks(new_book){
+      this.setState((state) => ({
+        books: state.books.concat([new_book])
+      })
+    )
+  }
+
   //there is such a thing as this.forceUpdate()
-  handleShelfChange(book_id, shelfName) {
+  handleShelfChange(book, shelfName) {
+    //if book is not in the current state add it
+    if(this.state.books.indexOf(book) === -1) {
+      this.updateBooks(book)
+    }
 
-    BooksAPI.update({id: book_id}, shelfName).then(responce => {
+    //update server on book shelf changes
+    BooksAPI.update(book, shelfName).then(responce => {
 
-      // //this works but have to get all book over the net
-      // this.getAllBooks()
-
-      //this causes TypeError book is not defined in HopePage line 13
       this.setState(prev_state => ({
-        books: prev_state.books.map((book) => {
+        books: prev_state.books.map((b) => {
           //list through books and change shelf if id match
-          if(book_id === book.id){
+          if(book.id === b.id){
             book.shelf = shelfName
           }
+
           //if you don't have return statement
           //this caused a bug in HomePage L12
-          return book
+          return b
         })
       }))
     })//.then()
   }//handleShelfChange()
-
-
-  getAllBooks() {
-    BooksAPI.getAll().then( (b) => {
-      this.setState({books: b})
-    })
-  }
 
   render() {
 
@@ -52,20 +56,20 @@ class BooksApp extends React.Component {
           <Route
           path="/search-books"
           render={() => (
-            <SearchPage onShelfChange={(book_id, shelfName) => {
-                          this.handleShelfChange(book_id, shelfName)
+            <SearchPage onShelfChange={(book, shelfName) => {
+                          this.handleShelfChange(book, shelfName)
                         }} />
-          )}
+                  )}
           />
 
           <Route
           exact path="/"
           render={() => (
             <HomePage books={this.state.books}
-                      onShelfChange={(book_id, shelfName) => {
-                        this.handleShelfChange(book_id, shelfName)
+                      onShelfChange={(book, shelfName) => {
+                        this.handleShelfChange(book, shelfName)
                       }}/>
-          )}
+                  )}
           />
       </div>
     )
