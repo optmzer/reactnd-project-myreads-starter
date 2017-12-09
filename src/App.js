@@ -19,7 +19,11 @@ class BooksApp extends React.Component {
   }//componentDidMount()
 // ====== SearchPage methods ======
   setNewBooks(new_books) {
-    this.setState({new_books: new_books})
+    if(new_books === null){
+      this.setState({new_books: []})
+    }else {
+      this.setState({new_books: new_books})
+    }
   }//setNewBooks()
 
   removeBookFromNewBooks(book) {

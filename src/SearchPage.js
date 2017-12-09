@@ -47,12 +47,15 @@ class SearchPage extends Component {
     if(this.state.search_query){
 
       BooksAPI.search(this.state.search_query, 20).then((found) => {
-        //filter books that already in the state
-        this.props.onUpdateNewBooks(found.filter((book) => {
-          //if does not include remove it from search result
-            return !this.isInCollection(book)
-          })//.filter
-        )
+        console.log("L50 SearchPage - ", found);
+        if(found.length) {
+            //filter books that already in the state
+            this.props.onUpdateNewBooks(found.filter((book) => {
+              //if does not include remove it from search result
+              return !this.isInCollection(book)
+              })//.filter
+            )
+        }
       })//.then
 
     }//if
@@ -70,10 +73,15 @@ class SearchPage extends Component {
 
     const {search_query} = this.state
 
+    //Clears previouse search results if there were any
+
+
     return(
       <div className="search-books">
         <div className="search-books-bar">
-          <Link to="/" className="close-search" >Close</Link>
+          <Link to="/"
+                className="close-search"
+                onClick={() => this.props.onUpdateNewBooks(null)}>Close</Link>
           <div className="search-books-input-wrapper">
 
             <input type="text"
@@ -85,16 +93,18 @@ class SearchPage extends Component {
 
           </div>
         </div>
-        <div className="search-books-results">
-        {this.props.new_books.length !== 0 &&
 
-          < BookShelf bookShelfTitle="Search Results"
-                      books={this.props.new_books}
-                      onShelfChange={(book, shelfName) => {
-                        this.props.onShelfChange(book, shelfName)
-                      }} />
-        }
+        <div className="search-books-results">
+          {
+            < BookShelf bookShelfTitle="Search Results"
+                        books={this.props.new_books}
+                        onShelfChange={(book, shelfName) => {
+                          this.props.onShelfChange(book, shelfName)
+                        }} />
+          }
         </div>
+
+
       </div>
     )//return()
   }//render()
