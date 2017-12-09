@@ -15,8 +15,8 @@ but does not add it into the state of the app.
 class SearchPage extends Component {
 
   state = {
-    search_query: "",
-    books_found: []
+    search_query: ""
+    // books_found: []
   }
 
   updateSearchQuery(value) {
@@ -39,20 +39,22 @@ class SearchPage extends Component {
       }
     )
     return result
-  }
+  }//isInCollection()
 
   getSearchResults() {
     //books returned form search does not have shelf attribute.
     //if search_query is not empty
     if(this.state.search_query){
+
       BooksAPI.search(this.state.search_query, 20).then((found) => {
         //filter books that already in the state
-        this.setState({ books_found: found.filter((book) => {
+        this.props.onUpdateNewBooks(found.filter((book) => {
           //if does not include remove it from search result
             return !this.isInCollection(book)
           })//.filter
-       })//.setState
+        )
       })//.then
+
     }//if
   }//getSearchResults()
 
@@ -71,7 +73,7 @@ class SearchPage extends Component {
     return(
       <div className="search-books">
         <div className="search-books-bar">
-          <Link to="/" className="close-search">Close</Link>
+          <Link to="/" className="close-search" >Close</Link>
           <div className="search-books-input-wrapper">
 
             <input type="text"
@@ -84,20 +86,18 @@ class SearchPage extends Component {
           </div>
         </div>
         <div className="search-books-results">
-        {this.state.books_found.length !== 0 &&
+        {this.props.new_books.length !== 0 &&
 
           < BookShelf bookShelfTitle="Search Results"
-                      books={this.state.books_found}
+                      books={this.props.new_books}
                       onShelfChange={(book, shelfName) => {
                         this.props.onShelfChange(book, shelfName)
                       }} />
         }
-
         </div>
       </div>
     )//return()
   }//render()
 }//class SearchPage
-
 
 export default SearchPage

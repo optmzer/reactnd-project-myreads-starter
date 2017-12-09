@@ -9,6 +9,7 @@ class BooksApp extends React.Component {
 
   state = {
     books: [],
+    new_books: []
   }
 
   componentDidMount() {
@@ -16,7 +17,20 @@ class BooksApp extends React.Component {
       this.setState({books: b})
     })
   }//componentDidMount()
+// ====== SearchPage methods ======
+  setNewBooks(new_books) {
+    this.setState({new_books: new_books})
+  }//setNewBooks()
 
+  removeBookFromNewBooks(book) {
+    this.setState(state => ({
+      new_books: state.new_books.filter(element => {
+        return element.id !== book.id
+      })
+    }))
+  }//removeBookFromNewBooks()
+
+// ====== HomePage methods ======
   updateBooks(new_book){
       this.setState((state) => ({
         books: state.books.concat([new_book])
@@ -25,7 +39,7 @@ class BooksApp extends React.Component {
   }
 
   //remove book from the list
-  removeBookFromState(book) {
+  removeBookFromBooks(book) {
     this.setState(state => ({
       books: state.books.filter(element => {
         return element.id !== book.id
@@ -38,11 +52,11 @@ class BooksApp extends React.Component {
     //if book is not in the current state add it
     if(!this.state.books.includes(book)) {
       this.updateBooks(book)
+      this.removeBookFromNewBooks(book)
     }
 
-    //TODO: causes a bug. override state with deleted book.
     if("none" === shelfName) {
-      this.removeBookFromState(book)
+      this.removeBookFromBooks(book)
     }
 
     //update server on book shelf changes
@@ -65,7 +79,8 @@ class BooksApp extends React.Component {
 
   render() {
 
-console.log("App render L72 - ", this.state.books)
+console.log("App render L73 - length = "+ this.state.books.length, this.state.books)
+console.log("App render L74 - length = "+ this.state.new_books.length, this.state.new_books)
 
     return (
       <div className="app">
@@ -73,6 +88,8 @@ console.log("App render L72 - ", this.state.books)
           path="/search-books"
           render={() => (
             <SearchPage books={this.state.books}
+                        new_books={this.state.new_books}
+                        onUpdateNewBooks={(new_books) => this.setNewBooks(new_books)}
                         onShelfChange={(book, shelfName) => {
                           this.handleShelfChange(book, shelfName)
                         }} />
