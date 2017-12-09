@@ -2,14 +2,14 @@ import React, {Component} from 'react'
 import Book from './Book'
 
 class BookShelf extends Component {
+
   render() {
     var bookShelfTitle = ""
+    var empty_page = "Add some books to read"
 
     if(this.props.books) {
       bookShelfTitle = this.props.bookShelfTitle
     }
-
-    // console.log("BookShelf L12, ", this.props)
 
     return(
       <div className="bookshelf">
@@ -27,10 +27,8 @@ class BookShelf extends Component {
                 </li>
               ))
             ) : (
-              <p>No books to dispaly</p>
-            )
-          }
-          </ol>
+              <p>{empty_page}</p>
+          )}</ol>
         </div>
       </div>
     )//return()

@@ -17,6 +17,7 @@ class BooksApp extends React.Component {
       this.setState({books: b})
     })
   }//componentDidMount()
+
 // ====== SearchPage methods ======
   setNewBooks(new_books) {
     if(new_books === null){
@@ -82,9 +83,6 @@ class BooksApp extends React.Component {
   }//handleShelfChange()
 
   render() {
-
-console.log("App render L73 - length = "+ this.state.books.length, this.state.books)
-console.log("App render L74 - length = "+ this.state.new_books.length, this.state.new_books)
 
     return (
       <div className="app">
