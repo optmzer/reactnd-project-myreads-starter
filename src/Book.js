@@ -14,8 +14,11 @@ class Book extends Component {
     var title,
         thumbnail,
         authors = ""
+    var average_rating = 0
 
     if(bookInstance){
+      console.log("L19 Book - ", bookInstance)
+      bookInstance.averageRating && (average_rating = bookInstance.averageRating)
       bookInstance.title ? title = bookInstance.title : title = "Could not find a title"
       bookInstance.imageLinks ? thumbnail = bookInstance.imageLinks.smallThumbnail : thumbnail = "./src/icons/icon-no-image.png"
       if(bookInstance.authors){
@@ -39,6 +42,11 @@ class Book extends Component {
                                             width: 128,
                                             height: 188,
                                             backgroundImage: `url(${thumbnail})` }}></div>
+
+          <div className="book-ratings">
+
+          </div>
+
           <div className="book-shelf-changer">
             <select id={bookInstance.id}
                     onChange={(event) => this.props.onShelfChange(bookInstance, event.target.value)}
