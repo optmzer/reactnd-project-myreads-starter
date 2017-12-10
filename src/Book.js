@@ -16,8 +16,8 @@ class Book extends Component {
         authors = ""
 
     if(bookInstance){
-      title = bookInstance.title
-      thumbnail = bookInstance.imageLinks.smallThumbnail
+      bookInstance.title ? title = bookInstance.title : title = "Could not find a title"
+      bookInstance.imageLinks ? thumbnail = bookInstance.imageLinks.smallThumbnail : thumbnail = "./src/icon-no-image.png"
       if(bookInstance.authors){
         bookInstance.authors.forEach((value, index) => {
           if(index > 0){

@@ -21,23 +21,14 @@ const search_terms = [
   'Time', 'Tolstoy', 'Travel', 'Ultimate', 'Virtual Reality',
   'Web Development', 'iOS']
 
+  var searchComesUpWithNothing = "Add some books to read"
+
+
 class SearchPage extends Component {
 
   state = {
     search_query: ""
     // books_found: []
-  }
-
-  onEmpty() {
-    let terms = ""
-      search_terms.forEach((element, index) => {
-        if(index !== search_terms.length) {
-          terms += element + ", "
-        } else {
-          terms += element
-        }
-      })
-    return terms
   }
 
   updateSearchQuery(value) {
@@ -62,36 +53,54 @@ class SearchPage extends Component {
     return result
   }//isInCollection()
 
-  getSearchResults() {
+  getSearchResults(query) {
     //books returned form search does not have shelf attribute.
     //if search_query is not empty
-    if(this.state.search_query){
+    console.log("getSearchResults - L66 ", this.state);
+    // let query = this.state.search_query
 
-      BooksAPI.search(this.state.search_query, 20).then((found) => {
-        console.log("L50 SearchPage - ", found);
+    if(query){
+
+      BooksAPI.search(query, 5).then((found) => {
+        console.log("L65 SearchPage - ", found);
         if(found.length) {
+          console.log("L67 SearchPage if ", found);
             //filter books that already in the state
             this.props.onUpdateNewBooks(found.filter((book) => {
               //if does not include remove it from search result
               return !this.isInCollection(book)
               })//.filter
             )
+        } else {
+          console.log("L75 SearchPage else ", found);
+          searchComesUpWithNothing = "We could not find any books for you with this parameters"
+          this.props.onUpdateNewBooks(null)
         }
       })//.then
+      // this.clearQuery()
     }//if
+    //If I put clearQuery in here, it will delete search_query
+    //faster then it will set it.
   }//getSearchResults()
 
-  hndleButtonPress(key) {
+  handleButtonPress(key) {
     //on press Enterget results form the server
     if(key === "Enter"){
-      this.getSearchResults()
-      this.clearQuery()
+      console.log("SearchPage L88 ", key);
+      this.getSearchResults(this.state.search_query)
     }
+  }
+
+  handleTermClick(value) {
+    console.log("SearchPage L94 - ", value);
+    this.updateSearchQuery(value)
+    this.getSearchResults(value)
   }
 
   render() {
 
     const {search_query} = this.state
+    console.log("search_query L103 ", this.state.search_query);
 
     return(
       <div className="search-books">
@@ -103,26 +112,37 @@ class SearchPage extends Component {
             <input type="text"
                   placeholder="Search by title or author"
                   value={search_query}
-                  onChange={event => this.updateSearchQuery(event.target.value)}
-                  onKeyPress={(event) => this.hndleButtonPress(event.key)}
+                  onChange={(event) => this.updateSearchQuery(event.target.value)}
+                  onKeyPress={(event) => this.handleButtonPress(event.key)}
                   />
           </div>
         </div>
         <div className="search-books-results">
           { this.props.new_books.length !== 0 ? (
               < BookShelf bookShelfTitle="Search Results"
-              books={this.props.new_books}
-              onShelfChange={(book, shelfName) => {
-                this.props.onShelfChange(book, shelfName)
-              }}
+                          books={this.props.new_books}
+                          onShelfChange={(book, shelfName) => {
+                            this.props.onShelfChange(book, shelfName)
+                          }}
               />
             ) : (
               <div>
-                <h2 className="bookshelf-title">Add some books to read</h2>
+                <h2 className="bookshelf-title">{searchComesUpWithNothing}</h2>
                 <div className="bookshelf-books">
-                  <h3>Pelase use these earch terms to define your search</h3>
+                  <h3>Pelase use search bar or terms below to define your search</h3>
                 </div>
-                <p>{this.onEmpty()}</p>
+                <p>{search_terms.map((element, index) => {
+                  return(
+                    <span key={element + index}>
+                      <a  href="#"
+                          onClick={(event) => {
+                            this.handleTermClick(event.target.id)
+                            }
+                          }
+                          id={element}>{element}</a>{search_terms.length -1 !== index && " | "}
+                    </span>
+                  )
+                })}</p>
               </div>
             )
           }
