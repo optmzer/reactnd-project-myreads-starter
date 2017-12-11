@@ -142,6 +142,9 @@ class SearchPage extends Component {
               </div>
 
         </div>
+
+        <div className="web-dev"> web dev | Alexander Frolov</div>
+        
       </div>
     )//return()
   }//render()

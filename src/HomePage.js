@@ -64,6 +64,8 @@ class HomePage extends Component  {
         <div className="open-search">
           <Link to="/search-books">Add a book</Link>
         </div>
+        <div className="web-dev"> web dev | Alexander Frolov</div>
+        
       </div>
     )//return()
   }//render()
