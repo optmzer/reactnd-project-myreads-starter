@@ -1,11 +1,9 @@
 import React, {Component} from 'react'
+import BookRatings from './BookRatings'
 
 class Book extends Component {
 
-  outputEvent(event) {
-    console.log(event)
-    console.log(event.target)
-  }
+
 
   render() {
 
@@ -14,10 +12,10 @@ class Book extends Component {
     var title,
         thumbnail,
         authors = ""
+
     var average_rating = 0
 
     if(bookInstance){
-      console.log("L19 Book - ", bookInstance)
       bookInstance.averageRating && (average_rating = bookInstance.averageRating)
       bookInstance.title ? title = bookInstance.title : title = "Could not find a title"
       bookInstance.imageLinks ? thumbnail = bookInstance.imageLinks.smallThumbnail : thumbnail = "./src/icons/icon-no-image.png"
@@ -43,9 +41,6 @@ class Book extends Component {
                                             height: 188,
                                             backgroundImage: `url(${thumbnail})` }}></div>
 
-          <div className="book-ratings">
-
-          </div>
 
           <div className="book-shelf-changer">
             <select id={bookInstance.id}
@@ -58,6 +53,9 @@ class Book extends Component {
               <option value="none">None</option>
             </select>
           </div>
+        </div>
+        <div className="book-ratings">
+        <BookRatings averageRating={average_rating} />
         </div>
         <div className="book-title">{title}</div>
         <div className="book-authors">{authors}</div>

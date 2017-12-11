@@ -56,15 +56,11 @@ class SearchPage extends Component {
   getSearchResults(query) {
     //books returned form search does not have shelf attribute.
     //if search_query is not empty
-    console.log("getSearchResults - L66 ", this.state);
-    // let query = this.state.search_query
 
     if(query){
 
       BooksAPI.search(query, 5).then((found) => {
-        console.log("L65 SearchPage - ", found);
         if(found.length) {
-          console.log("L67 SearchPage if ", found);
             //filter books that already in the state
             this.props.onUpdateNewBooks(found.filter((book) => {
               //if does not include remove it from search result
@@ -72,7 +68,6 @@ class SearchPage extends Component {
               })//.filter
             )
         } else {
-          console.log("L75 SearchPage else ", found);
           searchComesUpWithNothing = "We could not find any books for you with this parameters"
           this.props.onUpdateNewBooks(null)
         }
@@ -86,13 +81,11 @@ class SearchPage extends Component {
   handleButtonPress(key) {
     //on press Enterget results form the server
     if(key === "Enter"){
-      console.log("SearchPage L88 ", key);
       this.getSearchResults(this.state.search_query)
     }
   }
 
   handleTermClick(value) {
-    console.log("SearchPage L94 - ", value);
     this.updateSearchQuery(value)
     this.getSearchResults(value)
   }
@@ -100,7 +93,6 @@ class SearchPage extends Component {
   render() {
 
     const {search_query} = this.state
-    console.log("search_query L103 ", this.state.search_query);
 
     return(
       <div className="search-books">
