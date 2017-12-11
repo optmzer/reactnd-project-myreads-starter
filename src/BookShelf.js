@@ -11,6 +11,10 @@ class BookShelf extends Component {
       bookShelfTitle = this.props.bookShelfTitle
     }
 
+    if(this.props.emptyPageBanner) {
+      empty_page = this.props.emptyPageBanner
+    }
+
     return(
       <div className="bookshelf">
         <h2 className="bookshelf-title">{bookShelfTitle}</h2>

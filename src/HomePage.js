@@ -64,6 +64,4 @@ class HomePage extends Component  {
   }//render()
 }//class HomePage
 
-
-
 export default HomePage

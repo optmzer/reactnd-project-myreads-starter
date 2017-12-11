@@ -21,14 +21,12 @@ const search_terms = [
   'Time', 'Tolstoy', 'Travel', 'Ultimate', 'Virtual Reality',
   'Web Development', 'iOS']
 
-  var searchComesUpWithNothing = "Add some books to read"
-
+var searchComesUpWithNothing = "Please define search parameters"
 
 class SearchPage extends Component {
 
   state = {
     search_query: ""
-    // books_found: []
   }
 
   updateSearchQuery(value) {
@@ -59,7 +57,8 @@ class SearchPage extends Component {
 
     if(query){
 
-      BooksAPI.search(query, 5).then((found) => {
+      BooksAPI.search(query, 20).then((found) => {
+        console.log("L61 - SearchPage ", found);
         if(found.length) {
             //filter books that already in the state
             this.props.onUpdateNewBooks(found.filter((book) => {
@@ -68,11 +67,11 @@ class SearchPage extends Component {
               })//.filter
             )
         } else {
+          console.log("L70 else triggered ");
           searchComesUpWithNothing = "We could not find any books for you with this parameters"
           this.props.onUpdateNewBooks(null)
         }
       })//.then
-      // this.clearQuery()
     }//if
     //If I put clearQuery in here, it will delete search_query
     //faster then it will set it.
@@ -110,16 +109,15 @@ class SearchPage extends Component {
           </div>
         </div>
         <div className="search-books-results">
-          { this.props.new_books.length !== 0 ? (
               < BookShelf bookShelfTitle="Search Results"
                           books={this.props.new_books}
+                          emptyPageBanner={searchComesUpWithNothing}
                           onShelfChange={(book, shelfName) => {
                             this.props.onShelfChange(book, shelfName)
                           }}
               />
-            ) : (
               <div>
-                <h2 className="bookshelf-title">{searchComesUpWithNothing}</h2>
+                <h2 className="bookshelf-title"></h2>
                 <div className="bookshelf-books">
                   <h3>Pelase use search bar or terms below to define your search</h3>
                 </div>
@@ -136,8 +134,7 @@ class SearchPage extends Component {
                   )
                 })}</p>
               </div>
-            )
-          }
+
         </div>
       </div>
     )//return()

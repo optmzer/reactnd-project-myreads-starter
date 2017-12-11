@@ -3,8 +3,6 @@ import BookRatings from './BookRatings'
 
 class Book extends Component {
 
-
-
   render() {
 
     const {bookInstance} = this.props
@@ -41,11 +39,11 @@ class Book extends Component {
                                             height: 188,
                                             backgroundImage: `url(${thumbnail})` }}></div>
 
-
           <div className="book-shelf-changer">
             <select id={bookInstance.id}
-                    onChange={(event) => this.props.onShelfChange(bookInstance, event.target.value)}
-                    >
+                    onChange={(event) => (
+                      this.props.onShelfChange(bookInstance, event.target.value)
+                    )} >
               <option value="none">Move to...</option>
               <option value="currentlyReading">Currently Reading</option>
               <option value="wantToRead">Want to Read</option>
