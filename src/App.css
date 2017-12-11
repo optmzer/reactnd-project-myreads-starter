@@ -172,3 +172,11 @@ body, .app {
   text-align: center;
   font-size: 0.8em;
 }
+
+/* web dev */
+.web-dev {
+  padding: 0;
+  margin: 0;
+  text-align: center;
+  color: #999;
+}
