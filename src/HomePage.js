@@ -1,9 +1,14 @@
 import React, {Component} from 'react'
 import {Link} from 'react-router-dom'
 import BookShelf from './BookShelf'
-
+import PropTypes from 'prop-types'
 
 class HomePage extends Component  {
+
+  static propTypes = {
+    books: PropTypes.array.isRequired,
+    onShelfChange: PropTypes.func.isRequired
+  }
 
   //filter books based on shelf name
   //currentlyReading, wantToRead, read

@@ -1,9 +1,11 @@
 import React, {Component} from 'react'
+import PropTypes from 'prop-types'
 
 const full_star = require("./icons/star-full.png")
 const half_star = require("./icons/star-half.png")
 const empty_star = require("./icons/star-empty.png")
 
+//default rating is 0, 5 empty stars.
 const ratings = [
   empty_star,
   empty_star,
@@ -13,6 +15,10 @@ const ratings = [
 ]
 
 class BookRatings extends Component {
+
+  static propTypes = {
+    averageRating: PropTypes.number.isRequired
+  }
 
   getBookRating(rating) {
     var book_rating = ratings.map((element) => {return element})

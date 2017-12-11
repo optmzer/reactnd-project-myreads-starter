@@ -1,7 +1,15 @@
 import React, {Component} from 'react'
 import Book from './Book'
+import PropTypes from 'prop-types'
 
 class BookShelf extends Component {
+
+  static propTypes = {
+    bookShelfTitle: PropTypes.string,
+    books: PropTypes.array.isRequired,
+    onShelfChange: PropTypes.func.isRequired,
+    emptyPageBanner: PropTypes.string
+  }
 
   render() {
     var bookShelfTitle = ""
@@ -25,8 +33,8 @@ class BookShelf extends Component {
               this.props.books.map((book) => (
                 <li key={book.id}>
                 <Book bookInstance={book}
-                onShelfChange={(book, shelfName) => {
-                  this.props.onShelfChange(book, shelfName)
+                      onShelfChange={(book, shelfName) => {
+                        this.props.onShelfChange(book, shelfName)
                 }}/>
                 </li>
               ))

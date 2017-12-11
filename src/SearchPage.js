@@ -2,10 +2,11 @@ import React, {Component} from 'react'
 import {Link} from 'react-router-dom'
 import * as BooksAPI from './BooksAPI'
 import BookShelf from './BookShelf'
+import PropTypes from 'prop-types'
 
 /**
 */
-
+//defines available search terms for the search API.
 const search_terms = [
   'Android', 'Art', 'Artificial Intelligence', 'Astronomy', 'Austen',
   'Baseball', 'Basketball', 'Bhagat', 'Biography', 'Brief', 'Business', 'Camus',
@@ -24,6 +25,13 @@ const search_terms = [
 var searchComesUpWithNothing = "Please define search parameters"
 
 class SearchPage extends Component {
+
+  static propTypes = {
+    books: PropTypes.array.isRequired,
+    new_books: PropTypes.array.isRequired,
+    onUpdateNewBooks: PropTypes.func.isRequired,
+    onShelfChange: PropTypes.func.isRequired
+  }
 
   state = {
     search_query: ""
@@ -58,7 +66,6 @@ class SearchPage extends Component {
     if(query){
 
       BooksAPI.search(query, 20).then((found) => {
-        console.log("L61 - SearchPage ", found);
         if(found.length) {
             //filter books that already in the state
             this.props.onUpdateNewBooks(found.filter((book) => {
@@ -67,7 +74,6 @@ class SearchPage extends Component {
               })//.filter
             )
         } else {
-          console.log("L70 else triggered ");
           searchComesUpWithNothing = "We could not find any books for you with this parameters"
           this.props.onUpdateNewBooks(null)
         }

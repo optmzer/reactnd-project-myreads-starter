@@ -1,7 +1,14 @@
 import React, {Component} from 'react'
 import BookRatings from './BookRatings'
+import PropTypes from 'prop-types'
+
 
 class Book extends Component {
+
+  static propTypes = {
+    bookInstance: PropTypes.object.isRequired,
+    onShelfChange: PropTypes.func.isRequired
+  }
 
   render() {
 
@@ -53,7 +60,7 @@ class Book extends Component {
           </div>
         </div>
         <div className="book-ratings">
-        <BookRatings averageRating={average_rating} />
+          <BookRatings averageRating={average_rating} />
         </div>
         <div className="book-title">{title}</div>
         <div className="book-authors">{authors}</div>
