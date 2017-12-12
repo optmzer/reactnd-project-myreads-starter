@@ -8,7 +8,8 @@ class BookShelf extends Component {
     bookShelfTitle: PropTypes.string,
     books: PropTypes.array.isRequired,
     onShelfChange: PropTypes.func.isRequired,
-    emptyPageBanner: PropTypes.string
+    emptyPageBanner: PropTypes.string,
+    showBooksState: PropTypes.bool
   }
 
   render() {
@@ -33,6 +34,7 @@ class BookShelf extends Component {
               this.props.books.map((book) => (
                 <li key={book.id}>
                 <Book bookInstance={book}
+                      showBooksState={this.props.showBooksState}
                       onShelfChange={(book, shelfName) => {
                         this.props.onShelfChange(book, shelfName)
                 }}/>

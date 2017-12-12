@@ -118,6 +118,7 @@ class SearchPage extends Component {
               < BookShelf bookShelfTitle="Search Results"
                           books={this.props.new_books}
                           emptyPageBanner={searchComesUpWithNothing}
+                          showBooksState={true}
                           onShelfChange={(book, shelfName) => {
                             this.props.onShelfChange(book, shelfName)
                           }}
@@ -125,12 +126,13 @@ class SearchPage extends Component {
               <div>
                 <h2 className="bookshelf-title"></h2>
                 <div className="bookshelf-books">
-                  <h3>Pelase use search bar or terms below to define your search</h3>
+                  <h3>Pelase use search bar or click on a term below to define your search</h3>
                 </div>
                 <p>{search_terms.map((element, index) => {
                   return(
                     <span key={element + index}>
-                      <a  href="#"
+                      <a  className="search-term"
+                          href="#"
                           onClick={(event) => {
                             this.handleTermClick(event.target.id)
                             }
@@ -144,7 +146,7 @@ class SearchPage extends Component {
         </div>
 
         <div className="web-dev"> web dev | Alexander Frolov</div>
-        
+
       </div>
     )//return()
   }//render()

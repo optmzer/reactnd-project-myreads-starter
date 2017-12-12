@@ -100,7 +100,8 @@ body, .app {
 }
 
 .search-books-results {
-  padding: 80px 10px 20px;
+  /*padding: 80px 10px 20px;*/
+  padding: 80px 10px;
 }
 
 /* books grid */
@@ -175,8 +176,14 @@ body, .app {
 
 /* web dev */
 .web-dev {
-  padding: 0;
+  padding: 0 0 20px;
   margin: 0;
   text-align: center;
   color: #999;
+}
+
+/* search-term*/
+.search-term {
+  text-decoration: none;
+  color: #2e7c31
 }
