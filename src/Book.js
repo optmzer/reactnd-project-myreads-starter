@@ -41,11 +41,13 @@ class Book extends Component {
     return(
       <div className="book">
         <div className="book-top">
-          <div className="book-cover" style={{
-                                            width: 128,
-                                            height: 188,
-                                            backgroundImage: `url(${thumbnail})` }}></div>
-
+          <a target="_blank" href={bookInstance.infoLink}>
+            <div  className="book-cover"
+                  style={{
+                          width: 128,
+                          height: 188,
+                          backgroundImage: `url(${thumbnail})` }}></div>
+          </a>
           <div className="book-shelf-changer">
             <select id={bookInstance.id}
                     onChange={(event) => (

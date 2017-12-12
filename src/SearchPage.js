@@ -125,7 +125,7 @@ class SearchPage extends Component {
               <div>
                 <h2 className="bookshelf-title"></h2>
                 <div className="bookshelf-books">
-                  <h3>Pelase use search bar or terms below to define your search</h3>
+                  <h3>Use search bar or terms below to define your search</h3>
                 </div>
                 <p>{search_terms.map((element, index) => {
                   return(
@@ -144,7 +144,7 @@ class SearchPage extends Component {
         </div>
 
         <div className="web-dev"> web dev | Alexander Frolov</div>
-        
+
       </div>
     )//return()
   }//render()
