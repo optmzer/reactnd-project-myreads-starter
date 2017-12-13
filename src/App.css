@@ -187,3 +187,9 @@ body, .app {
   text-decoration: none;
   color: #2e7c31
 }
+
+/* book-shelf*/
+.book-shelf {
+  padding: 0;
+  margin: 0;
+}

@@ -2,7 +2,6 @@ import React, {Component} from 'react'
 import BookRatings from './BookRatings'
 import PropTypes from 'prop-types'
 
-
 class Book extends Component {
 
   static propTypes = {
@@ -65,7 +64,9 @@ class Book extends Component {
     return(
       <div className="book">
       { this.props.showBooksState &&
-        (<div className="book-shelf"><h4>{this.getShelfState()}</h4></div>)
+        (<div className="book-shelf">
+          <h4>{this.getShelfState()}</h4>
+        </div>)
       }
         <div className="book-top">
           <div className="book-cover" style={{
