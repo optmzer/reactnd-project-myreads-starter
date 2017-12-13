@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import Book from './Book'
 import PropTypes from 'prop-types'
+import sortBy from 'sort-by'
 
 class BookShelf extends Component {
 
@@ -31,7 +32,7 @@ class BookShelf extends Component {
           <ol className="books-grid">
           {
             this.props.books.length !== 0 ? (
-              this.props.books.map((book) => (
+              this.props.books.sort(sortBy('title')).map((book) => (
                 <li key={book.id}>
                 <Book bookInstance={book}
                       showBooksState={this.props.showBooksState}
