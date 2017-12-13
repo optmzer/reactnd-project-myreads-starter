@@ -49,29 +49,28 @@ class SearchPage extends Component {
 
   //compares this.props.books with a book
   //returns true if book is in the this.props.books
-  isInCollection(book) {
-    var result = false
+  getShelf(book) {
+    var shelf = "none"
     this.props.books.forEach(function (element){
-        if(element.id === book.id || element.title === book.title)
-          result = true
+        if(element.id === book.id)
+          shelf = element.shelf
       }
     )
-    return result
+    return shelf
   }//isInCollection()
 
   getSearchResults(query) {
-    //books returned form search does not have shelf attribute.
     //if search_query is not empty
-
     if(query){
 
       BooksAPI.search(query, 20).then((found) => {
         if(found.length) {
-            //filter books that already in the state
-            this.props.onUpdateNewBooks(found.filter((book) => {
+            //set book shelf attribute to search resutl
+            this.props.onUpdateNewBooks(found.map((book) => {
               //if does not include remove it from search result
-              return !this.isInCollection(book)
-              })//.filter
+              book.shelf = this.getShelf(book)
+              return book
+            })//.map
             )
         } else {
           searchComesUpWithNothing = "We could not find any books for you with this parameters"
@@ -79,8 +78,6 @@ class SearchPage extends Component {
         }
       })//.then
     }//if
-    //If I put clearQuery in here, it will delete search_query
-    //faster then it will set it.
   }//getSearchResults()
 
   handleButtonPress(key) {
@@ -118,7 +115,7 @@ class SearchPage extends Component {
               < BookShelf bookShelfTitle="Search Results"
                           books={this.props.new_books}
                           emptyPageBanner={searchComesUpWithNothing}
-                          showBooksState={true}
+                          showBooksState="true"
                           onShelfChange={(book, shelfName) => {
                             this.props.onShelfChange(book, shelfName)
                           }}

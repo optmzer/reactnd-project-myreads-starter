@@ -8,20 +8,22 @@ class Book extends Component {
   static propTypes = {
     bookInstance: PropTypes.object.isRequired,
     onShelfChange: PropTypes.func.isRequired,
-    showBooksState: PropTypes.bool
+    showBooksState: PropTypes.string
   }
 
   getShelfState() {
-    if(this.props && this.props.showBooksState){
+
+    if(this.props && this.props.showBooksState === "true"){
+
       var shelf = "None"
-      switch(this.props.shelf){
+      switch(this.props.bookInstance.shelf){
         case "wantToRead" :
                         shelf = "Want to read";
                         break;
         case "currentlyReading" :
                         shelf = "Currently Reading";
                         break;
-        case "Read" :
+        case "read" :
                         shelf = "Read";
                         break;
         default:
@@ -41,13 +43,10 @@ class Book extends Component {
 
     var average_rating = 0
 
-
-
     if(bookInstance){
       bookInstance.averageRating && (average_rating = bookInstance.averageRating)
       bookInstance.title ? title = bookInstance.title : title = "Could not find a title"
       bookInstance.imageLinks ? thumbnail = bookInstance.imageLinks.smallThumbnail : thumbnail = "./icons/icon-no-image.png"
-
 
       if(bookInstance.authors){
         bookInstance.authors.forEach((value, index) => {
@@ -66,7 +65,7 @@ class Book extends Component {
     return(
       <div className="book">
       { this.props.showBooksState &&
-        (<div className="book-shelf"><h3>{this.getShelfState()}</h3></div>)
+        (<div className="book-shelf"><h4>{this.getShelfState()}</h4></div>)
       }
         <div className="book-top">
           <div className="book-cover" style={{

@@ -27,16 +27,17 @@ class BooksApp extends React.Component {
     }
   }//setNewBooks()
 
-  removeBookFromNewBooks(book) {
-    this.setState(state => ({
-      new_books: state.new_books.filter(element => {
-        return element.id !== book.id
-      })
-    }))
-  }//removeBookFromNewBooks()
-
 // ====== HomePage methods ======
-  updateBooks(new_book){
+  isInBooks(book) {
+    var present = false
+    this.state.books.forEach(element => {
+      if(element.id === book.id) present = true
+    })
+    console.log("L36 App ", present);
+    return present
+  }//isInBooks()
+
+  addBookToBooks(new_book){
       this.setState((state) => ({
         books: state.books.concat([new_book])
       })
@@ -52,16 +53,10 @@ class BooksApp extends React.Component {
     }))
   }//removeBookFromState()
 
-  //there is such a thing as this.forceUpdate()
   handleShelfChange(book, shelfName) {
     //if book is not in the current state add it
-    if(!this.state.books.includes(book)) {
-      this.updateBooks(book)
-      this.removeBookFromNewBooks(book)
-    }
-
-    if("none" === shelfName) {
-      this.removeBookFromBooks(book)
+    if(!this.isInBooks(book)) {
+      this.addBookToBooks(book)
     }
 
     //update server on book shelf changes
@@ -70,16 +65,16 @@ class BooksApp extends React.Component {
       this.setState(prev_state => ({
         books: prev_state.books.map((b) => {
           //list through books and change shelf if id match
+          //TODO: when changes state to none SearchPage does not update to none,
+          //but it does delete it from the main page and the state.
           if(book.id === b.id){
-            book.shelf = shelfName
+            book.shelf = b.shelf = shelfName
           }
-
-          //if you don't have return statement
-          //this caused a bug in HomePage L12
           return b
         })
       }))
     })//.then()
+
   }//handleShelfChange()
 
   render() {

@@ -9,7 +9,7 @@ class BookShelf extends Component {
     books: PropTypes.array.isRequired,
     onShelfChange: PropTypes.func.isRequired,
     emptyPageBanner: PropTypes.string,
-    showBooksState: PropTypes.bool
+    showBooksState: PropTypes.string
   }
 
   render() {
