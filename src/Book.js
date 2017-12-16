@@ -60,7 +60,6 @@ class Book extends Component {
         authors += "Authors not stated"
       }//if else
     }
-
     return(
       <div className="book">
       { this.props.showBooksState &&
@@ -69,11 +68,12 @@ class Book extends Component {
         </div>)
       }
         <div className="book-top">
-          <div className="book-cover" style={{
-                                            width: 128,
-                                            height: 188,
-                                            backgroundImage: `url(${thumbnail})` }}></div>
-
+          <a href={bookInstance.infoLink} target="_blank">
+            <div className="book-cover" style={{
+                                              width: 128,
+                                              height: 188,
+                                              backgroundImage: `url(${thumbnail})` }}></div>
+          </a>
           <div className="book-shelf-changer">
             <select id={bookInstance.id}
                     onChange={(event) => (

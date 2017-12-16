@@ -16,8 +16,10 @@ class BookShelf extends Component {
   render() {
     var bookShelfTitle = ""
     var empty_page = "Add some books to read"
+    var sorted_books
 
     if(this.props.books) {
+      sorted_books = this.props.books.sort(sortBy('title'))
       bookShelfTitle = this.props.bookShelfTitle
     }
 
@@ -32,7 +34,7 @@ class BookShelf extends Component {
           <ol className="books-grid">
           {
             this.props.books.length !== 0 ? (
-              this.props.books.sort(sortBy('title')).map((book) => (
+              sorted_books.map((book) => (
                 <li key={book.id}>
                 <Book bookInstance={book}
                       showBooksState={this.props.showBooksState}

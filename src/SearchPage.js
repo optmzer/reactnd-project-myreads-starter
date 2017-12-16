@@ -3,6 +3,7 @@ import {Link} from 'react-router-dom'
 import * as BooksAPI from './BooksAPI'
 import BookShelf from './BookShelf'
 import PropTypes from 'prop-types'
+import _score from 'underscore'
 
 /**
 */
@@ -33,20 +34,6 @@ class SearchPage extends Component {
     onShelfChange: PropTypes.func.isRequired
   }
 
-  state = {
-    search_query: ""
-  }
-
-  updateSearchQuery(value) {
-    this.setState({
-      search_query: value
-    })
-  }
-
-  clearQuery() {
-    this.setState({search_query: ""})
-  }
-
   //compares this.props.books with a book
   //returns true if book is in the this.props.books
   getShelf(book) {
@@ -59,12 +46,16 @@ class SearchPage extends Component {
     return shelf
   }//isInCollection()
 
+  /**
+   * Sends request to search server and waits for the promise
+   * Sets new_books to empty if search_query is empty or
+   * BooksAPI returns empty results.
+   */
   getSearchResults(query) {
     //if search_query is not empty
-    if(query){
-
-      BooksAPI.search(query, 20).then((found) => {
-        if(found.length) {
+    if(query !== "" || this.props.searchQuery){
+      BooksAPI.search(query, 10).then((found) => {
+        if(found.length && this.props.searchQuery) {
             //set book shelf attribute to search resutl
             this.props.onUpdateNewBooks(found.map((book) => {
               //if does not include remove it from search result
@@ -77,40 +68,43 @@ class SearchPage extends Component {
           this.props.onUpdateNewBooks(null)
         }
       })//.then
-    }//if
+    } else {
+      this.props.onUpdateNewBooks(null)
+    }//if else
   }//getSearchResults()
 
-  handleButtonPress(key) {
-    //on press Enterget results form the server
-    if(key === "Enter"){
-      this.getSearchResults(this.state.search_query)
-    }
-  }
 
-  handleTermClick(value) {
-    this.updateSearchQuery(value)
-    this.getSearchResults(value)
+  /**
+   * sets search query and gets books from the server
+   */
+  handleInput(value) {
+    this.props.onSetSearchQuery(value)
+    //reducec amounts of requests to server while typing
+    _score.debounce(this.getSearchResults(value), 1000)
   }
 
   render() {
 
-    const {search_query} = this.state
-
     return(
       <div className="search-books">
-        <div className="search-books-bar">
-          <Link to="/"
-                className="close-search"
-                onClick={() => this.props.onUpdateNewBooks(null)}>Close</Link>
-          <div className="search-books-input-wrapper">
-            <input type="text"
-                  placeholder="Search by title or author"
-                  value={search_query}
-                  onChange={(event) => this.updateSearchQuery(event.target.value)}
-                  onKeyPress={(event) => this.handleButtonPress(event.key)}
-                  />
+          <div className="search-books-bar">
+            <Link to="/"
+                  className="close-search"
+                  onClick={() => {
+                    this.props.onUpdateNewBooks(null)
+                    this.props.onReturnToMain()
+                  }}
+                  >Close</Link>
+            <div className="search-books-input-wrapper">
+              <input  type="text"
+                      placeholder="Search by title or author"
+                      value={this.props.searchQuery}
+                      onChange={(event) => {
+                      this.handleInput(event.target.value)
+                      }}
+                    />
+            </div>
           </div>
-        </div>
         <div className="search-books-results">
               < BookShelf bookShelfTitle="Search Results"
                           books={this.props.new_books}
@@ -131,7 +125,7 @@ class SearchPage extends Component {
                       <a  className="search-term"
                           href="#"
                           onClick={(event) => {
-                            this.handleTermClick(event.target.id)
+                            this.handleInput(event.target.id)
                             }
                           }
                           id={element}>{element}</a>{search_terms.length -1 !== index && " | "}

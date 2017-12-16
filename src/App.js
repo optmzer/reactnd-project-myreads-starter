@@ -8,6 +8,7 @@ import SearchPage from './SearchPage'
 class BooksApp extends React.Component {
 
   state = {
+    search_query: "",
     books: [],
     new_books: []
   }
@@ -19,9 +20,19 @@ class BooksApp extends React.Component {
   }//componentDidMount()
 
 // ====== SearchPage methods ======
+  setSearchQuery(value) {
+    this.setState({
+      search_query: value.trim(),
+    })
+  }//updateSearchQuery()
+
   setNewBooks(new_books) {
     if(new_books === null){
-      this.setState({new_books: []})
+      this.setState({
+        search_query: "",
+        new_books: []
+      })
+      console.log("L35 App new_books are null ", this.state.new_books);
     }else {
       this.setState({new_books: new_books})
     }
@@ -33,7 +44,6 @@ class BooksApp extends React.Component {
     this.state.books.forEach(element => {
       if(element.id === book.id) present = true
     })
-    console.log("L36 App ", present);
     return present
   }//isInBooks()
 
@@ -65,8 +75,6 @@ class BooksApp extends React.Component {
       this.setState(prev_state => ({
         books: prev_state.books.map((b) => {
           //list through books and change shelf if id match
-          //TODO: when changes state to none SearchPage does not update to none,
-          //but it does delete it from the main page and the state.
           if(book.id === b.id){
             book.shelf = b.shelf = shelfName
           }
@@ -79,17 +87,28 @@ class BooksApp extends React.Component {
 
   render() {
 
+    console.log("L90 App new_books are null ", this.state.new_books);
+
+
     return (
       <div className="app">
           <Route
           path="/search"
-          render={() => (
-            <SearchPage books={this.state.books}
+          render={({history}) => (
+            <SearchPage onSetSearchQuery={
+                        (search_query) => this.setSearchQuery(search_query)
+                        }
+                        searchQuery={this.state.search_query}
+                        books={this.state.books}
                         new_books={this.state.new_books}
                         onUpdateNewBooks={(new_books) => this.setNewBooks(new_books)}
                         onShelfChange={(book, shelfName) => {
                           this.handleShelfChange(book, shelfName)
-                        }} />
+                        }}
+                        onReturnToMain={() => {
+                          history.push("/")
+                        }}
+                       />
                   )}
           />
 
