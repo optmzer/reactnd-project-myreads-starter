@@ -32,7 +32,6 @@ class BooksApp extends React.Component {
         search_query: "",
         new_books: []
       })
-      console.log("L35 App new_books are null ", this.state.new_books);
     }else {
       this.setState({new_books: new_books})
     }
@@ -86,9 +85,6 @@ class BooksApp extends React.Component {
   }//handleShelfChange()
 
   render() {
-
-    console.log("L90 App new_books are null ", this.state.new_books);
-
 
     return (
       <div className="app">
