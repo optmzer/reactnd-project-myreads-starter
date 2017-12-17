@@ -1,0 +1,52 @@
+.sort {
+  float: right;
+  width: 70%;
+}
+
+.sort-list {
+  list-style-type: none;
+  margin: 0;
+  padding: 0 20px;
+  background: #2e7c31;
+  overflow: hidden;
+  text-align: center;
+  float: right;
+}
+
+.sort-list li {
+  display: inline;
+  height: 60px;
+  width: 100px;
+  float: left;
+  padding: 16px 0;
+  color: white;
+}
+
+.sort-list li:first-child {
+  width: 150px;
+}
+
+/* Change the link color to #111 (black) on hover */
+.sort-list-item:hover {
+  background-color: #5af460;
+}
+.sort-list-item:hover a{
+  font-size: 140%;
+  margin: -10px 0 10px 0;
+  /* padding: 0px 0 80px 0; */
+  color: #f4c024;
+}
+
+.sort-list-item a {
+  display: block;
+  color: white;
+  padding: 0;
+  text-decoration: none;
+}
+
+
+
+.active {
+  background-color: #5af460;
+
+}

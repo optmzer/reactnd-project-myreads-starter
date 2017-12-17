@@ -2,6 +2,8 @@ import React, {Component} from 'react'
 import {Link} from 'react-router-dom'
 import BookShelf from './BookShelf'
 import PropTypes from 'prop-types'
+import sortBy from 'sort-by'
+import './sort.css'
 
 class HomePage extends Component  {
 
@@ -10,11 +12,61 @@ class HomePage extends Component  {
     onShelfChange: PropTypes.func.isRequired
   }
 
+  state = {
+    sort_by_value : "title",
+    title: "active",
+    authors: "",
+    averageRating: ""
+  }
+
+  updateState(value) {
+    switch(value) {
+      case "-averageRating":
+                      this.setState({
+                        sort_by_value : value,
+                        title: "",
+                        authors: "",
+                        averageRating: "active"
+                      })
+                      break;
+      case "authors":
+                      this.setState({
+                        sort_by_value : value,
+                        title: "",
+                        authors: "active",
+                        averageRating: ""
+                      })
+                      break;
+      default:
+                      this.setState({
+                        sort_by_value : value,
+                        title: "active",
+                        authors: "",
+                        averageRating: ""
+                      })
+                      break;
+    }//switch
+  }
+
+  getSortByValue(event) {
+    let value
+    if(event.target.id !== ""){
+      value = event.target.id
+    } else {
+      value = event.target.firstChild.id
+    }
+
+    //to reverse sort order use minus
+    if(value === "averageRating") value = "-averageRating"
+
+    this.updateState(value)
+  }//getSortByValueValue()
+
   //filter books based on shelf name
   //currentlyReading, wantToRead, read
   filterBooks(filterString) {
     if(this.props.books){
-      return this.props.books.filter((book) => {
+      return this.props.books.sort(sortBy(this.state.sort_by_value)).filter((book) => {
         return book.shelf === filterString
       })
     }
@@ -41,6 +93,21 @@ class HomePage extends Component  {
       <div className="list-books">
         <div className="list-books-title">
           <h1>MyReads</h1>
+          <div className="sort">
+            <ul className="sort-list"
+                >
+              <li ><a>Sort my books by</a></li>
+              <li className={this.state.title + " sort-list-item title"}
+                  onClick={(event) => this.getSortByValue(event)}>
+                  <a href="#" id="title">Title</a></li>
+              <li className={this.state.authors + " sort-list-item authors"}
+                  onClick={(event) => this.getSortByValue(event)}>
+                  <a href="#" id="authors">Author</a></li>
+              <li className={this.state.averageRating + " sort-list-item ratings"}
+                  onClick={(event) => this.getSortByValue(event)}>
+                  <a href="#" id="averageRating">Ratings</a></li>
+            </ul>
+          </div>
         </div>
         <div className="list-books-content">
           <div>

@@ -11,14 +11,20 @@ body, .app {
 /* main page */
 
 .list-books-title {
-  padding: 10px 0;
+  padding: 0;
   background: #2e7c31;
-  text-align: center;
+  text-align: left;
+  display: inline-block;
+  width: 100%;
 }
+
 .list-books-title h1 {
+  float:left;
   font-weight: 400;
   margin: 0;
+  padding: 5px 19px;
   color: white;
+  width: 30%;
 }
 
 .list-books-content {

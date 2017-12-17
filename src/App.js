@@ -15,7 +15,8 @@ class BooksApp extends React.Component {
 
   componentDidMount() {
     BooksAPI.getAll().then( (b) => {
-      this.setState({books: b})
+
+      this.setState({books: this.checkAverageRating(b)})
     })
   }//componentDidMount()
 
@@ -32,13 +33,24 @@ class BooksApp extends React.Component {
         search_query: "",
         new_books: []
       })
-      console.log("L35 App new_books are null ", this.state.new_books);
     }else {
       this.setState({new_books: new_books})
     }
   }//setNewBooks()
 
 // ====== HomePage methods ======
+  //some books do not have ratings so we cannot sort them
+  //function adds averageRating: 0 (number) to book object.
+  checkAverageRating(books){
+    return  (books.map((element) => {
+        if(!element.averageRating) {
+          element.averageRating = 0
+        }
+        return element
+      })
+    )
+  }
+
   isInBooks(book) {
     var present = false
     this.state.books.forEach(element => {
@@ -86,9 +98,6 @@ class BooksApp extends React.Component {
   }//handleShelfChange()
 
   render() {
-
-    console.log("L90 App new_books are null ", this.state.new_books);
-
 
     return (
       <div className="app">
