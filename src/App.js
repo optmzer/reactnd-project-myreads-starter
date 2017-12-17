@@ -15,7 +15,8 @@ class BooksApp extends React.Component {
 
   componentDidMount() {
     BooksAPI.getAll().then( (b) => {
-      this.setState({books: b})
+
+      this.setState({books: this.checkAverageRating(b)})
     })
   }//componentDidMount()
 
@@ -38,6 +39,18 @@ class BooksApp extends React.Component {
   }//setNewBooks()
 
 // ====== HomePage methods ======
+  //some books do not have ratings so we cannot sort them
+  //function adds averageRating: 0 (number) to book object.
+  checkAverageRating(books){
+    return  (books.map((element) => {
+        if(!element.averageRating) {
+          element.averageRating = 0
+        }
+        return element
+      })
+    )
+  }
+
   isInBooks(book) {
     var present = false
     this.state.books.forEach(element => {

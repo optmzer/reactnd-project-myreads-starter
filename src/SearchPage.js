@@ -5,8 +5,6 @@ import BookShelf from './BookShelf'
 import PropTypes from 'prop-types'
 import _score from 'underscore'
 
-/**
-*/
 //defines available search terms for the search API.
 const search_terms = [
   'Android', 'Art', 'Artificial Intelligence', 'Astronomy', 'Austen',
@@ -80,7 +78,7 @@ class SearchPage extends Component {
   handleInput(value) {
     this.props.onSetSearchQuery(value)
     //reducec amounts of requests to server while typing
-    _score.debounce(this.getSearchResults(value), 1000)
+    _score.debounce(this.getSearchResults(value), 500)
   }
 
   render() {
