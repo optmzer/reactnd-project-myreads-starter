@@ -68,11 +68,12 @@ class Book extends Component {
         </div>)
       }
         <div className="book-top">
-          <a href={bookInstance.infoLink} target="_blank">
-            <div className="book-cover" style={{
-                                              width: 128,
-                                              height: 188,
-                                              backgroundImage: `url(${thumbnail})` }}></div>
+          <a target="_blank" href={bookInstance.infoLink}>
+            <div  className="book-cover"
+                  style={{
+                          width: 128,
+                          height: 188,
+                          backgroundImage: `url(${thumbnail})` }}></div>
           </a>
           <div className="book-shelf-changer">
             <select id={bookInstance.id}
