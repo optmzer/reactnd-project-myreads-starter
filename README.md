@@ -1,15 +1,16 @@
 # MyReads Project
 
-This is the starter template for the final assessment project for Udacity's React Fundamentals course. The goal of this template is to save you time by providing a static example of the CSS and HTML markup that may be used, but without any of the React code that is needed to complete the project. If you choose to start with this template, your job will be to add interactivity to the app by refactoring the static code in this template.
+This was the starter template for the final assessment project for Udacity's React Fundamentals course. The goal of this template is to save you time by providing a static example of the CSS and HTML markup that may be used, but without any of the React code that is needed to complete the project. 
 
-Of course, you are free to start this project from scratch if you wish! Just be sure to use [Create React App](https://github.com/facebookincubator/create-react-app) to bootstrap the project.
 
 ## TL;DR
 
-To get started developing right away:
+To start away:
 
-* install all project dependencies with `npm install`
-* start the development server with `npm start`
+* clone the repo
+* install npm (node packet manager)
+* navigate into the folder containing the project
+* start the development server with `npm start`. the app starts on a singl connamd.
 
 ## What You're Getting
 ```bash
@@ -24,13 +25,19 @@ To get started developing right away:
     ├── App.css # Styles for your app. Feel free to customize this as you desire.
     ├── App.js # This is the root of your app. Contains static HTML right now.
     ├── App.test.js # Used for testing. Provided with Create React App. Testing is encouraged, but not required.
+    ├── Book.js # custom React Component
+    ├── BookRatings.js # custom React Component, reads ratings of the book and paints 5 star ratings
     ├── BooksAPI.js # A JavaScript API for the provided Udacity backend. Instructions for the methods are below.
+    ├── BookShelf.js # custom React Component. Exhibits a list of Book components
+    ├── HomePage.js # custom React Component. The app main page
     ├── icons # Helpful images for your app. Use at your discretion.
     │   ├── add.svg
     │   ├── arrow-back.svg
     │   └── arrow-drop-down.svg
     ├── index.css # Global styles. You probably won't need to change anything here.
-    └── index.js # You should not need to modify this file. It is used for DOM rendering only.
+    ├── index.js # You should not need to modify this file. It is used for DOM rendering only.
+    ├── SearchPage.js # custom React Component. Sends requests to the server and outputs the reuslt if successful
+    └── sort.css # CSS file for sort feature I added. 3 <li> that toggle on click
 ```
 
 Remember that good React design practice is to create new JS files for each component and use import/require statements to include them where they are needed.
@@ -88,6 +95,6 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 ## Contributing
 
-This repository is the starter code for _all_ Udacity students. Therefore, we most likely will not accept pull requests.
+This repository was the starter code for Udacity students. Do not have plans to develop the app yet. Please consider the other projects. Thanks.
 
 For details, check out [CONTRIBUTING.md](CONTRIBUTING.md).
